@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriSnap Feature - Nutrition Analysis</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background-color: white;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 10px solid #333;
+        }
+        
+        .app-header {
+            background-color: #2ecc71;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .app-logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2ecc71;
+            font-weight: bold;
+        }
+        
+        .main-content {
+            padding: 20px;
+            height: calc(100% - 80px);
+            overflow-y: auto;
+        }
+        
+        .food-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .food-image {
+            height: 150px;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .food-details {
+            padding: 15px;
+        }
+        
+        .food-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .accuracy-badge {
+            background-color: #2ecc71;
+            color: white;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+        
+        .macros-chart {
+            height: 200px;
+            margin: 20px 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 0 10px;
+        }
+        
+        .macro-bar {
+            width: 60px;
+            background-color: #f39c12;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        
+        .macro-value {
+            position: absolute;
+            top: -25px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .macro-label {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .nutrition-details {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .nutrition-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .nutrition-name {
+            color: #34495e;
+        }
+        
+        .nutrition-value {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .nutrition-subrow {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0 8px 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .daily-progress {
+            margin-top: 20px;
+        }
+        
+        .progress-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar-container {
+            height: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: #2ecc71;
+            border-radius: 5px;
+        }
+        
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="app-header">
+            <div class="app-logo">
+                <div class="logo-icon">N</div>
+                Nutrition Analysis
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="food-card">
+                <div class="food-image">Quinoa Salad with Vegetables</div>
+                <div class="food-details">
+                    <div class="food-title">
+                        <span>Quinoa Salad</span>
+                        <span class="accuracy-badge">98% Match</span>
+                    </div>
+                    
+                    <div class="macros-chart">
+                        <div class="macro-bar" style="height: 120px; background-color: #3498db;">
+                            <span class="macro-value">42g</span>
+                            <span class="macro-label">Carbs</span>
+                        </div>
+                        <div class="macro-bar" style="height: 80px; background-color: #f39c12;">
+                            <span class="macro-value">15g</span>
+                            <span class="macro-label">Protein</span>
+                        </div>
+                        <div class="macro-bar" style="height: 60px; background-color: #e74c3c;">
+                            <span class="macro-value">8g</span>
+                            <span class="macro-label">Fat</span>
+                        </div>
+                        <div class="macro-bar" style="height: 40px; background-color: #9b59b6;">
+                            <span class="macro-value">7g</span>
+                            <span class="macro-label">Fiber</span>
+                        </div>
+                    </div>
+                    
+                    <div class="nutrition-details">
+                        <div class="nutrition-row">
+                            <span class="nutrition-name">Calories</span>
+                            <span class="nutrition-value">320 kcal</span>
+                        </div>
+                        <div class="nutrition-row">
+                            <span class="nutrition-name">Total Carbohydrates</span>
+                            <span class="nutrition-value">42g</span>
+                        </div>
+                        <div class="nutrition-subrow">
+                            <span>Dietary Fiber</span>
+                            <span>7g</span>
+                        </div>
+                        <div class="nutrition-subrow">
+                            <span>Sugars</span>
+                            <span>4g</span>
+                        </div>
+                        <div class="nutrition-row">
+                            <span class="nutrition-name">Protein</span>
+                            <span class="nutrition-value">15g</span>
+                        </div>
+                        <div class="nutrition-row">
+                            <span class="nutrition-name">Total Fat</span>
+                            <span class="nutrition-value">8g</span>
+                        </div>
+                        <div class="nutrition-subrow">
+                            <span>Saturated Fat</span>
+                            <span>1.2g</span>
+                        </div>
+                    </div>
+                    
+                    <div class="daily-progress">
+                        <div class="progress-title">Daily Calorie Goal</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: 35%;"></div>
+                        </div>
+                        <div class="progress-labels">
+                            <span>320 / 2000 kcal</span>
+                            <span>35%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriSnap Feature - Meal Snapping</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background-color: white;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 10px solid #333;
+        }
+        
+        .camera-interface {
+            position: relative;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .camera-preview {
+            flex: 1;
+            background-color: #3498db;
+            background-image: linear-gradient(120deg, #3498db, #2ecc71);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .camera-controls {
+            height: 150px;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .camera-button {
+            width: 70px;
+            height: 70px;
+            background-color: white;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .camera-modes {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+        }
+        
+        .camera-mode {
+            color: white;
+            font-size: 14px;
+            opacity: 0.7;
+            text-align: center;
+        }
+        
+        .camera-mode.active {
+            opacity: 1;
+            color: #2ecc71;
+        }
+        
+        .ai-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+        
+        .detection-box {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 2px dashed #2ecc71;
+            border-radius: 10px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+        }
+        
+        .detection-label {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(46, 204, 113, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .ai-status {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="camera-interface">
+            <div class="camera-preview">
+                <!-- Food image placeholder -->
+                <div style="position: relative;">
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.3);"></div>
+                    Healthy Breakfast Bowl
+                </div>
+            </div>
+            
+            <div class="ai-overlay">
+                <div class="ai-status">
+                    <div class="status-dot"></div>
+                    AI Analyzing
+                </div>
+                <div class="detection-box"></div>
+                <div class="detection-label">Avocado Toast</div>
+            </div>
+            
+            <div class="camera-controls">
+                <div class="camera-button"></div>
+                <div class="camera-modes">
+                    <div class="camera-mode">Gallery</div>
+                    <div class="camera-mode active">Food Snap</div>
+                    <div class="camera-mode">Barcode</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
