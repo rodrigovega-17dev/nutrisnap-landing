@@ -1,34 +1,45 @@
-# Astro Starter Kit: Basics
+# NutriSnap Landing Page
 
-```sh
-npm create astro@latest -- --template basics
-```
+A modern, engaging landing page for the NutriSnap mobile application, built with Astro.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+![NutriSnap Landing Page](public/images/hero-app-mockup.png)
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## ✨ Features
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+- **Modern Design**: Utilizes glassmorphism, subtle animations, and a vibrant color scheme
+- **Responsive Layout**: Optimized for all device sizes
+- **App Showcase**: Custom app mockups demonstrating key features
+- **Download CTAs**: Strategically placed download buttons throughout the page
 
-## 🚀 Project Structure
+## 📱 About NutriSnap
 
-Inside of your Astro project, you'll see the following folders and files:
+NutriSnap is a mobile application that helps users track their nutrition through:
+
+- **AI-Powered Food Recognition**: Snap a photo of your meal for instant nutritional analysis
+- **Detailed Nutrition Tracking**: Get comprehensive breakdowns of macros and micronutrients
+- **Personalized AI Coaching**: Receive tailored nutrition advice and meal recommendations
+
+## 🚀 Technology Stack
+
+- **Framework**: [Astro](https://astro.build/)
+- **Styling**: Custom CSS with variables for theming
+- **Mockups**: Custom HTML/CSS mockups converted to images
+
+## 📝 Project Structure
 
 ```text
 /
 ├── public/
-│   └── favicon.svg
+│   └── images/             # App mockups and badges
 ├── src/
+│   ├── components/
+│   │   └── Welcome.astro   # Main landing page component
 │   ├── layouts/
-│   │   └── Layout.astro
+│   │   └── Layout.astro    # Base layout template
 │   └── pages/
-│       └── index.astro
+│       └── index.astro     # Main entry point
 └── package.json
 ```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
 
 ## 🧞 Commands
 
@@ -43,6 +54,21 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## 👀 Want to learn more?
+## 🎨 Design Elements
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- **Color Scheme**:
+  - Primary: #2ecc71 (NutriSnap Green)
+  - Secondary: #3498db (Bright Blue)
+  - Accent: #f39c12 (Warm Orange)
+
+- **Sections**:
+  - Hero with app showcase
+  - Feature highlights
+  - How it works
+  - Testimonials
+  - Download CTA
+  - Footer with links
+
+## 📱 App Store Badges
+
+The landing page uses official App Store and Google Play badges for download CTAs.
