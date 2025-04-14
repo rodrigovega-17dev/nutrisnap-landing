@@ -1,0 +1,57 @@
+---
+// Language switcher component
+// Get the current language from the URL query parameter, default to 'en'
+const currentLang = Astro.url.searchParams.get('lang') || 'en';
+
+// Determine the target language and the link URL
+const targetLang = currentLang === 'en' ? 'es' : 'en';
+const targetUrl = `/?lang=${targetLang}`;
+
+// Determine the text for the button
+const buttonText = currentLang === 'en' ? 'Español' : 'English';
+
+---
+
+<div class="language-toggle">
+  <a href={targetUrl} class="lang-btn" id="lang-toggle-link">
+    {buttonText}
+  </a>
+</div>
+
+<script define:vars={{ targetLang }}>
+  // Client-side script to set cookie on click
+  const link = document.getElementById('lang-toggle-link');
+  if (link) {
+    link.addEventListener('click', () => {
+      console.log(`[Switcher Script] Setting cookie astro_lang=${targetLang}`);
+      // Set cookie for the root path, expires in 1 day
+      document.cookie = `astro_lang=${targetLang}; path=/; max-age=86400`;
+    });
+  }
+</script>
+
+<style>
+  .language-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+  
+  .lang-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .lang-btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+  }
+</style>

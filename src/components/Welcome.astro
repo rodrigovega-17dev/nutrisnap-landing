@@ -1,9 +1,35 @@
 ---
 // src/components/Welcome.astro
 // Inspired by Calai.app structure and style
+import { translations } from '../translations.js';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+
+// Get language preference: prioritize cookie, then URL param, default to 'en'
+const cookieLang = Astro.cookies.get('astro_lang')?.value;
+const urlLang = Astro.url.searchParams.get('lang');
+let currentLang = 'en'; // Default
+let langSource = 'default';
+
+if (cookieLang && ['en', 'es'].includes(cookieLang)) {
+  currentLang = cookieLang;
+  langSource = 'cookie';
+  // Clear the cookie after reading it, so URL takes precedence on next direct load
+  Astro.cookies.delete('astro_lang', { path: '/' });
+} else if (urlLang && ['en', 'es'].includes(urlLang)) {
+  currentLang = urlLang;
+  langSource = 'url';
+}
+
+// Make sure we use the correct language object
+const langKey = currentLang; // Already validated 'en' or 'es'
+const t = translations[langKey as 'en' | 'es']; // Assert type for TS
+
 ---
 
 <div class="page-wrapper">
+    <!-- Language Toggle -->
+    <LanguageSwitcher />
+    
     <!-- Hero Section -->
     <section class="hero">
         <div class="container hero-content">
@@ -12,32 +38,32 @@
                     <img src="/images/nutrisnap-icon.png" alt="NutriSnap Logo" class="logo-image" />
                     <span class="logo-text">NutriSnap</span>
                 </div>
-                <div class="badge">NEW</div>
-                <h1>Nutrition tracking <span class="highlight">on-demand</span></h1>
-                <p class="subtitle">Snap meals, track effortlessly, get personalized insights, and reach your health goals faster with NutriSnap.</p>
+                <div class="badge">{t.newBadge}</div>
+                <h1>{t.heroTitle} <span class="highlight">{t.heroHighlight}</span></h1>
+                <p class="subtitle">{t.heroSubtitle}</p>
                 <div class="app-features hero-features">
                     <div class="feature-point">
                         <div class="feature-icon">📸</div>
-                        <p>Snap a photo of your meal and get instant nutrition data</p>
+                        <p>{t.snapBenefit1}</p>
                     </div>
                     <div class="feature-point">
                         <div class="feature-icon">🤖</div>
-                        <p>AI-powered coach provides personalized recommendations</p>
+                        <p>{t.coachBenefit2}</p>
                     </div>
                 </div>
                 <div class="download-badges">
                     <a href="https://apps.apple.com" target="_blank" rel="noopener" class="store-badge">
-                        <img src="/images/app-store-badge.png" alt="Download on the App Store" class="badge-image" />
+                        <img src="/images/app-store-badge.png" alt={t.downloadIos} class="badge-image" />
                     </a>
                     <a href="https://play.google.com" target="_blank" rel="noopener" class="store-badge">
-                        <img src="/images/google-play-badge.svg" alt="Get it on Google Play" class="badge-image" />
+                        <img src="/images/google-play-badge.svg" alt={t.downloadAndroid} class="badge-image" />
                     </a>
                 </div>
-                <p class="trial-info">Start your 7-day free trial today!</p>
+                <p class="trial-info">{t.freeTrial}</p>
             </div>
             <div class="hero-visual">
                 <img src="/images/hero-app-mockup.png" alt="NutriSnap App Interface Mockup" class="hero-mockup" />
-                <div class="floating-badge hero-badge">AI Powered!</div>
+                <div class="floating-badge hero-badge">{t.aiPowered}</div>
             </div>
         </div>
         <div class="visual-elements hero-elements">
@@ -58,18 +84,18 @@
     <!-- Features Section - Alternating Layout -->
     <section class="features">
         <div class="container">
-            <h2 class="section-title">Why you'll <span class="highlight">love</span> NutriSnap</h2>
+            <h2 class="section-title">{t.whyLove} <span class="highlight">{t.loveBold}</span> {t.nutriSnap}</h2>
 
             <!-- Feature 1: Snap & Track -->
             <div class="feature-item alternating-layout">
                 <div class="feature-text">
-                    <div class="feature-label">Snap</div>
-                    <h3>Snap & Track Instantly</h3>
-                    <p>Log meals just by taking a photo. Our AI identifies food items, estimates portions, and calculates nutrition automatically. Effortless tracking is here.</p>
+                    <div class="feature-label">{t.snapLabel}</div>
+                    <h3>{t.snapTitle}</h3>
+                    <p>{t.snapDesc}</p>
                     <ul class="feature-benefits">
-                        <li>AI-powered food recognition</li>
-                        <li>Automatic portion estimation</li>
-                        <li>Quick manual entry option</li>
+                        <li>{t.snapBenefit1}</li>
+                        <li>{t.snapBenefit2}</li>
+                        <li>{t.snapBenefit3}</li>
                     </ul>
                 </div>
                 <div class="feature-visual">
@@ -82,13 +108,13 @@
             <!-- Feature 2: Detailed Analysis -->
             <div class="feature-item alternating-layout reverse">
                 <div class="feature-text">
-                    <div class="feature-label">Analyze</div>
-                    <h3>Detailed Nutrition Analysis</h3>
-                    <p>Go beyond calories. Understand your macros, vitamins, and minerals. Visualize your progress towards daily and long-term goals with insightful charts.</p>
+                    <div class="feature-label">{t.analyzeLabel}</div>
+                    <h3>{t.analyzeTitle}</h3>
+                    <p>{t.analyzeDesc}</p>
                      <ul class="feature-benefits">
-                        <li>Macronutrient breakdown</li>
-                        <li>Micronutrient tracking (Vitamins & Minerals)</li>
-                        <li>Progress charts and reports</li>
+                        <li>{t.analyzeBenefit1}</li>
+                        <li>{t.analyzeBenefit2}</li>
+                        <li>{t.analyzeBenefit3}</li>
                     </ul>
                 </div>
                 <div class="feature-visual">
@@ -101,13 +127,13 @@
             <!-- Feature 3: AI Coach -->
             <div class="feature-item alternating-layout">
                 <div class="feature-text">
-                    <div class="feature-label">Coach</div>
-                    <h3>Personalized AI Coach</h3>
-                    <p>Chat with your AI nutritionist for tailored meal suggestions, answers to your food questions, and motivation. Choose an AI personality that fits your style!</p>
+                    <div class="feature-label coach-label">{t.coachLabel}</div>
+                    <h3>{t.coachTitle}</h3>
+                    <p>{t.coachDesc}</p>
                      <ul class="feature-benefits">
-                        <li>Context-aware meal advice</li>
-                        <li>Ask nutrition questions anytime</li>
-                        <li>Multiple AI personalities (Supportive, Data-Driven etc.)</li>
+                        <li>{t.coachBenefit1}</li>
+                        <li>{t.coachBenefit2}</li>
+                        <li>{t.coachBenefit3}</li>
                     </ul>
                 </div>
                 <div class="feature-visual">
@@ -127,22 +153,22 @@
     <!-- How It Works Section -->
     <section class="how-it-works">
         <div class="container">
-            <h2 class="section-title">How It <span class="highlight">Works</span></h2>
+            <h2 class="section-title" style="color: white">{t.howItTitle} <span class="highlight">{t.worksBold}</span></h2>
             <div class="steps-container">
                 <div class="step">
                     <div class="step-icon">📱</div>
-                    <strong>Download & Sign Up</strong>
-                    <p>Get the app and create your account in minutes.</p>
+                    <strong>{t.step1Title}</strong>
+                    <p>{t.step1Desc}</p>
                 </div>
                 <div class="step">
                     <div class="step-icon">📸</div>
-                    <strong>Snap Your First Meal</strong>
-                    <p>Use the camera to log food instantly and see the magic.</p>
+                    <strong>{t.step2Title}</strong>
+                    <p>{t.step2Desc}</p>
                 </div>
                 <div class="step">
                     <div class="step-icon">🎯</div>
-                    <strong>Reach Your Goals</strong>
-                    <p>Track progress and use AI insights to stay motivated.</p>
+                    <strong>{t.step3Title}</strong>
+                    <p>{t.step3Desc}</p>
                 </div>
             </div>
         </div>
@@ -156,38 +182,38 @@
     <!-- Testimonials Section -->
     <section class="testimonials">
         <div class="container">
-            <h2 class="section-title">People <span class="highlight">Love</span> NutriSnap</h2>
+            <h2 class="section-title">{t.testimonialsTitle} <span class="highlight">{t.loveBoldTestimonials}</span> {t.nutriSnapTestimonials}</h2>
             <div class="testimonial-grid">
                 <div class="testimonial-card">
                     <div class="stars">★★★★★</div>
-                    <p class="quote">"NutriSnap changed the game for me. Tracking is finally easy and the AI coach keeps me motivated!"</p>
+                    <p class="quote">"{t.testimonial1}"</p>
                     <div class="user">
-                        <div class="avatar">SK</div>
+                        <div class="avatar">MK</div>
                         <div class="user-info">
-                            <p class="name">Sarah K.</p>
-                            <p class="achievement">Lost 12 lbs in 2 months</p>
+                            <p class="name">{t.testimonialName1}</p>
+                            <p class="achievement">{t.testimonialDesc1}</p>
                         </div>
                     </div>
                 </div>
                 <div class="testimonial-card">
                     <div class="stars">★★★★★</div>
-                    <p class="quote">"Finally understand my eating habits. The detailed analysis is incredibly helpful. Highly recommend!"</p>
-                    <div class="user">
-                        <div class="avatar">MT</div>
+                    <p class="quote">"{t.testimonial2}"</p>
+                    <div class="user">ß
+                        <div class="avatar">JL</div>
                         <div class="user-info">
-                            <p class="name">Mike T.</p>
-                            <p class="achievement">Fitness coach</p>
+                            <p class="name">{t.testimonialName2}</p>
+                            <p class="achievement">{t.testimonialDesc2}</p>
                         </div>
                     </div>
                 </div>
                 <div class="testimonial-card">
                     <div class="stars">★★★★★</div>
-                    <p class="quote">"Was skeptical about the AI, but it gives genuinely useful advice. It's like having a nutritionist in my pocket."</p>
+                    <p class="quote">"{t.testimonial3}"</p>
                     <div class="user">
                         <div class="avatar">JL</div>
                         <div class="user-info">
-                            <p class="name">Jessica L.</p>
-                            <p class="achievement">Busy mom of two</p>
+                            <p class="name">{t.testimonialName3}</p>
+                            <p class="achievement">{t.testimonialDesc3}</p>
                         </div>
                     </div>
                 </div>
@@ -200,36 +226,36 @@
         <div class="container">
             <div class="download-content">
                 <div class="download-text">
-                    <h2 class="section-title">Start Your <span class="highlight">Health Journey</span> Today</h2>
-                    <p class="download-subtitle">Download NutriSnap now and transform the way you track your nutrition. Snap, analyze, and improve with AI-powered insights.</p>
+                    <h2 class="section-title">{t.downloadTitle} <span class="highlight">{t.healthJourney}</span> {t.downloadToday}</h2>
+                    <p class="download-subtitle">{t.downloadSubtitle}</p>
                     
                     <div class="app-features">
                         <div class="feature-point">
                             <div class="feature-icon">📸</div>
-                            <p>Snap photos of meals for instant tracking</p>
+                            <p>{t.downloadBenefit1}</p>
                         </div>
                         <div class="feature-point">
                             <div class="feature-icon">🤖</div>
-                            <p>Get personalized advice from AI coach</p>
+                            <p>{t.downloadBenefit2}</p>
                         </div>
                         <div class="feature-point">
                             <div class="feature-icon">📊</div>
-                            <p>Track progress with detailed nutrition reports</p>
+                            <p>{t.downloadBenefit3}</p>
                         </div>
                     </div>
                     
                     <div class="download-badges cta-badges">
                         <a href="https://apps.apple.com" target="_blank" rel="noopener" class="store-badge">
-                            <img src="/images/app-store-badge.png" alt="Download on the App Store" class="badge-image" />
+                            <img src="/images/app-store-badge.png" alt={t.downloadIos} class="badge-image" />
                         </a>
                         <a href="https://play.google.com" target="_blank" rel="noopener" class="store-badge">
-                            <img src="/images/google-play-badge.svg" alt="Get it on Google Play" class="badge-image" />
+                            <img src="/images/google-play-badge.svg" alt={t.downloadAndroid} class="badge-image" />
                         </a>
                     </div>
                 </div>
                 <div class="download-visual">
-                    <img src="/images/hero-app-mockup.png" alt="NutriSnap App on smartphone" class="app-mockup" />
-                    <div class="floating-badge">Free 7-day trial</div>
+                    <img src="/images/hero-app-main-mockup.png" alt="NutriSnap App on smartphone" class="app-mockup" />
+                    <div class="floating-badge">{t.freeTrial}</div>
                 </div>
             </div>
         </div>
@@ -250,22 +276,22 @@
             <div class="blob blob-2"></div>
         </div>
         <div class="container footer-content">
-            <h2>Ready to <span class="highlight">Transform</span> Your Nutrition?</h2>
-            <p class="footer-subtitle">Join thousands of users who have improved their health with NutriSnap</p>
+            <h2>{t.footerTitle} <span class="highlight">{t.transformBold}</span> {t.yourNutrition}</h2>
+            <p class="footer-subtitle">{t.footerSubtitle}</p>
             <div class="download-badges footer-badges">
                 <a href="https://apps.apple.com" target="_blank" rel="noopener" class="store-badge">
-                    <img src="/images/app-store-badge.png" alt="Download on the App Store" class="badge-image" />
+                    <img src="/images/app-store-badge.png" alt={t.downloadIos} class="badge-image" />
                 </a>
                 <a href="https://play.google.com" target="_blank" rel="noopener" class="store-badge">
-                    <img src="/images/google-play-badge.svg" alt="Get it on Google Play" class="badge-image" />
+                    <img src="/images/google-play-badge.svg" alt={t.downloadAndroid} class="badge-image" />
                 </a>
             </div>
             <div class="footer-bottom">
-                <p class="copyright">&copy; {new Date().getFullYear()} NutriSnap. All rights reserved.</p>
+                <p class="copyright">{t.copyright}</p>
                 <div class="footer-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Contact Us</a>
+                    <a href="#">{t.privacyPolicy}</a>
+                    <a href="#">{t.termsOfService}</a>
+                    <a href="#">{t.contactUs}</a>
                 </div>
             </div>
         </div>
@@ -278,7 +304,7 @@
     :root {
         --primary-color: #2ecc71; /* NutriSnap Green */
         --secondary-color: #3498db; /* Bright Blue */
-        --accent-color: #f39c12; /* Warm Orange */
+        --accent-color: #e74c3c; /* Bright coral/red for better contrast with green */
         --text-color: #2c3e50; /* Midnight Blue */
         --text-light: #576574; /* Lighter grey */
         --bg-color: #FFFDF7; /* Light Cream */
@@ -419,20 +445,24 @@
         margin-bottom: 0.5em;
     }
     .hero .highlight {
-        color: var(--accent-color);
+        color: white;
+        background-color: var(--accent-color);
         position: relative;
         display: inline-block;
+        font-weight: 800;
+        padding: 0 8px;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
     .hero .highlight::after {
         content: '';
         position: absolute;
-        bottom: 5px;
+        bottom: -3px;
         left: 0;
         width: 100%;
-        height: 8px;
-        background-color: rgba(46, 204, 113, 0.3);
-        z-index: -1;
-        border-radius: 4px;
+        height: 2px;
+        background-color: white;
+        z-index: 1;
     }
     .app-logo {
         display: flex;
@@ -462,7 +492,7 @@
     .badge {
         display: inline-block;
         background-color: var(--accent-color);
-        color: var(--text-color);
+        color: white;
         padding: 5px 15px;
         border-radius: 50px;
         font-weight: 700;
@@ -470,6 +500,8 @@
         margin-bottom: 1.5em;
         text-transform: uppercase;
         letter-spacing: 1px;
+        border: 1px solid white;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     }
     .hero .subtitle {
         font-size: clamp(1.1rem, 2.5vw, 1.3rem);
@@ -685,20 +717,24 @@
         position: relative;
     }
     .features .highlight {
-        color: var(--primary-color);
+        color: white;
+        background-color: var(--accent-color);
         position: relative;
         display: inline-block;
+        font-weight: 800;
+        padding: 0 8px;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
     .features .highlight::after {
         content: '';
         position: absolute;
-        bottom: 5px;
+        bottom: -3px;
         left: 0;
         width: 100%;
-        height: 8px;
-        background-color: rgba(46, 204, 113, 0.2);
-        z-index: -1;
-        border-radius: 4px;
+        height: 2px;
+        background-color: white;
+        z-index: 1;
     }
     .feature-item {
         display: grid;
@@ -725,7 +761,7 @@
     }
     .feature-label {
         display: inline-block;
-        background-color: var(--secondary-color);
+        background-color: var(--secondary-color); /* Blue for Snap */
         color: white;
         padding: 5px 15px;
         border-radius: 50px;
@@ -734,13 +770,18 @@
         margin-bottom: 1em;
         text-transform: uppercase;
         letter-spacing: 1px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
+    /* Orange/Red for Analyze */
     .alternating-layout.reverse .feature-label {
-        background-color: var(--primary-color);
-    }
-    .alternating-layout:nth-child(3) .feature-label {
         background-color: var(--accent-color);
-        color: var(--text-color);
+    }
+    /* Target the Coach label specifically */
+    .coach-label {
+        background-color: var(--primary-color);
+        color: white;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     }
     .feature-benefits {
         margin-top: 1.5em;
@@ -820,23 +861,10 @@
         color: var(--text-color);
     }
     .how-it-works .section-title {
-        color: var(--text-color);
+        color: white;
     }
     .how-it-works .highlight {
         color: var(--primary-color);
-        position: relative;
-        display: inline-block;
-    }
-    .how-it-works .highlight::after {
-        content: '';
-        position: absolute;
-        bottom: 5px;
-        left: 0;
-        width: 100%;
-        height: 8px;
-        background-color: rgba(46, 204, 113, 0.2);
-        z-index: -1;
-        border-radius: 4px;
     }
     .steps-container {
         display: grid;
@@ -891,20 +919,24 @@
         color: var(--text-color); /* Reset color */
     }
     .testimonials .highlight {
-        color: var(--primary-color);
+        color: white;
+        background-color: var(--accent-color);
         position: relative;
         display: inline-block;
+        font-weight: 800;
+        padding: 0 8px;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
     .testimonials .highlight::after {
         content: '';
         position: absolute;
-        bottom: 5px;
+        bottom: -3px;
         left: 0;
         width: 100%;
-        height: 8px;
-        background-color: rgba(46, 204, 113, 0.2);
-        z-index: -1;
-        border-radius: 4px;
+        height: 2px;
+        background-color: white;
+        z-index: 1;
     }
     .testimonial-grid {
         display: grid;
@@ -1219,9 +1251,14 @@
         font-size: clamp(1.8rem, 4vw, 2.5rem);
     }
     .footer .highlight {
-        color: var(--accent-color);
+        color: white;
+        background-color: var(--accent-color);
         position: relative;
         display: inline-block;
+        font-weight: 800;
+        padding: 0 8px;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
     .footer .highlight::after {
         content: '';
@@ -1362,20 +1399,24 @@
         overflow: hidden;
     }
     .download-cta .highlight {
-        color: var(--primary-color);
+        color: white;
+        background-color: var(--accent-color);
         position: relative;
         display: inline-block;
+        font-weight: 800;
+        padding: 0 8px;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
     .download-cta .highlight::after {
         content: '';
         position: absolute;
-        bottom: 5px;
+        bottom: -3px;
         left: 0;
         width: 100%;
-        height: 8px;
-        background-color: rgba(46, 204, 113, 0.2);
-        z-index: -1;
-        border-radius: 4px;
+        height: 2px;
+        background-color: white;
+        z-index: 1;
     }
     .download-content {
         display: grid;
@@ -1547,7 +1588,7 @@
         top: 30px;
         right: 0;
         background-color: var(--accent-color);
-        color: var(--text-color);
+        color: white;
         padding: 12px 25px;
         border-radius: 30px;
         font-weight: 700;
@@ -1557,7 +1598,8 @@
         z-index: 10;
         font-size: 1.1rem;
         letter-spacing: 0.5px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        border: 2px solid white;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
     @keyframes float {
         0%, 100% { transform: translateY(0) rotate(10deg); }
@@ -1569,4 +1611,6 @@
             grid-template-columns: 1.2fr 0.8fr;
         }
     }
+    
+
 </style>
